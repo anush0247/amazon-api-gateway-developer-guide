@@ -196,6 +196,34 @@ Before your private API can be accessed, you need to create a resource policy an
 
 To do this, follow the instructions in [Create and Attach an API Gateway Resource Policy to an API](apigateway-resource-policies-create-attach.md)\. In step 4, choose the **Source VPC Whitelist** example\. Replace `{{vpceID}}` \(including the curly braces\) with your VPC endpoint ID, choose **Save** to save your resource policy\.
 
+For example if your account id is 1234567891011, api id is api1234567, vpceId is vpce-1211212 and region ap-south-1 
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "execute-api:Invoke",
+            "Resource": "arn:aws:execute-api:ap-south-1:1234567891011:api1234567/*",
+            "Condition": {
+                "StringNotEquals": {
+                    "aws:sourceVpce": "vpce-1211212"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "execute-api:Invoke",
+            "Resource": "arn:aws:execute-api:ap-south-1:1234567891011:api1234567/*"
+        }
+    ]
+}
+
+````
+
 ## Deploy a Private API Using the API Gateway Console<a name="apigateway-private-api-deploy-using-console"></a>
 
 To deploy your private API, do the following in the API Gateway console:
